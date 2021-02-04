@@ -1,15 +1,30 @@
-<a href="./records/new">Create</a>
-<ul>
-  {{#each records}}
-  <li>
-    <i class="{{this.categoryIcon}}"></i>
-    {{this.name}}
-    {{this.date}}
-    {{this.amount}}
-    <a href="./records/{{ this._id }}/edit">edit</a>
-    <form action="./records/{{ this._id }}/delete" method="POST" style="display: inline">
-      <button type="submit">delete</button>
-    </form>
-  </li>
-  {{/each}}
-</ul>
+<div class="container col-6">
+  <select class="form-select" aria-label="Default select">
+    <option selected>類別</option>
+    <option>家居物業</option>
+    <option>交通出行</option>
+    <option>休閒娛樂</option>
+    <option>餐飲食品</option>
+    <option>其他</option>
+  </select>
+
+  總金額
+  {{totalAmount}}
+
+  <ul>
+    {{#each records}}
+    <li>
+      <i class="{{this.categoryIcon}}"></i>
+      {{this.name}}
+      {{this.date}}
+      {{this.amount}}
+      <a href="./records/{{ this._id }}/edit">編輯</a>
+      <form action="./records/{{ this._id }}/delete" method="POST" style="display: inline">
+        <button type="submit">刪除</button>
+      </form>
+    </li>
+    {{/each}}
+  </ul>
+
+  <a href="./records/new">新增</a>
+</div>
