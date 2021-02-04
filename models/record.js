@@ -16,11 +16,7 @@ const recordSchema = new Schema({
   amount: {
     type: Number,
     required: true
-  },
-  totalAmount: {
-    type: Number,
-    required: true
   }
 })
 
-module.export = mongoose.model('Record', recordSchema)
+module.exports = mongoose.model('Record', recordSchema)
