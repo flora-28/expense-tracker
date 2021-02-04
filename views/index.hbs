@@ -2,8 +2,8 @@
 <ul>
   {{#each records}}
   <li>
+    <i class="{{this.categoryIcon}}"></i>
     {{this.name}}
-    {{this.category}}
     {{this.date}}
     {{this.amount}}
     <a href="./records/{{ this._id }}/edit">edit</a>

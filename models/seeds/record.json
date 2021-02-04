@@ -3,31 +3,31 @@
     {
       "name": "午餐",
       "category": "餐飲食品",
-      "date": 20210201,
+      "date": "2021-02-01",
       "amount": 155
     },
     {
       "name": "捷運",
       "category": "交通出行",
-      "date": 20210202,
+      "date": "2021-02-02",
       "amount": 30
     },
     {
       "name": "大魯閣",
       "category": "休閒娛樂",
-      "date": 20210203,
+      "date": "2021-02-03",
       "amount": 300
     },
     {
       "name": "電費",
       "category": "家居物業",
-      "date": 20210204,
+      "date": "2021-02-04",
       "amount": 1562
     },
     {
       "name": "維修手機",
       "category": "其他",
-      "date": 20210205,
+      "date": "2021-02-05",
       "amount": 2900
     }
   ]
