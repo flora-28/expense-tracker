@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Record = require('../record')
-const recordList = require('./record.json')
-const categoryList = require('./category.json')
+const recordList = require('./records.json').results
+const categoryList = require('./categories.json').results
 
 mongoose.connect('mongodb://localhost/record', { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -12,8 +12,8 @@ db.on('error', () => {
 })
 db.once('open', () => {
   const records = []
-  recordList.results.forEach(record => {
-    const icon = categoryList.results.find(
+  recordList.forEach(record => {
+    const icon = categoryList.find(
       category => category.name === record.category
     ).icon
     record.categoryIcon = icon

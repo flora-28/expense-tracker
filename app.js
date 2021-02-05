@@ -4,6 +4,7 @@ const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 
 const Record = require('./models/record')
+const categoryList = require('./models/seeds/categories.json').results
 
 const app = express()
 const port = 3000
@@ -26,17 +27,27 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.get('/', (req, res) => {
   Record.find()
     .lean()
-    .then(records => res.render('index', { records }))
+    .then(records => {
+      let totalAmount = 0
+      records.forEach(record => {
+        totalAmount += record.amount
+      })
+      res.render('index', { records, totalAmount, categoryList })
+    })
     .catch(error => console.log(error))
 })
 
 app.get('/records/new', (req, res) => {
-  return res.render('new')
+  return res.render('new', { categoryList })
 })
 
 app.post('/records', (req, res) => {
   const recordItem = req.body
-  return Record.create(recordItem)
+  const icon = categoryList.find(category => category.name === recordItem.category)
+    .icon
+  recordItem.categoryIcon = icon
+
+  Record.create(recordItem)
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
@@ -45,7 +56,7 @@ app.get('/records/:id/edit', (req, res) => {
   const id = req.params.id
   return Record.findById(id)
     .lean()
-    .then((record) => res.render('edit', { record }))
+    .then((record) => res.render('edit', { record, categoryList }))
     .catch(error => console.log(error))
 })
 

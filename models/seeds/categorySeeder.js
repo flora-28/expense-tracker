@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Category = require('../category')
-const categoryList = require('./category.json')
+const categoryList = require('./categories.json').results
 
 mongoose.connect('mongodb://localhost/record', { useNewUrlParser: true, useUnifiedTopology: true })
 
@@ -11,7 +11,7 @@ db.on('error', () => {
 })
 db.once('open', () => {
   const categories = []
-  categoryList.results.forEach(category => {
+  categoryList.forEach(category => {
     categories.push(category)
   })
   Category.create(categories)
