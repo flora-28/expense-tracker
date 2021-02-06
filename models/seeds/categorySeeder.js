@@ -16,6 +16,8 @@ db.once('open', () => {
   })
   Category.create(categories)
     .then(() => {
-      console.log('done')
+      console.log(`insert categories done`)
+      return db.close()
     })
+    .then(() => console.log(`database connection close`))
 })

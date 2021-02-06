@@ -20,5 +20,9 @@ db.once('open', () => {
     records.push(record)
   })
   Record.create(records)
-    .then(() => console.log('done'))
+    .then(() => {
+      console.log(`insert records done`)
+      return db.close()
+    })
+    .then(() => console.log(`database connection close`))
 })
