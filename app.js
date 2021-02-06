@@ -20,7 +20,7 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs', helpers: { eq: (fiterText, i) => fiterText === i } }))
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs', helpers: { eq: (x, y) => x === y } }))
 app.set('view engine', 'hbs')
 
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -63,10 +63,13 @@ app.get('/records/:id/edit', (req, res) => {
 
 app.post('/records/:id/edit', (req, res) => {
   const id = req.params.id
-  const recordItem = req.body
-  return Record.findById(id)
+  const { name, Category, date, amount } = req.body
+  let [category, categoryIcon] = Category.split('/')
+  const newCategory = { category, categoryIcon }
+  const newReqBody = Object.assign(req.body, newCategory)
+  Record.findById(id)
     .then(record => {
-      record = Object.assign(record, recordItem)
+      record = Object.assign(record, newReqBody)
       return record.save()
     })
     .then(() => res.redirect('/'))
