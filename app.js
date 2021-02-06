@@ -2,10 +2,10 @@ const express = require('express')
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
 
 const Record = require('./models/record')
 const categoryList = require('./models/seeds/categories.json').results
-const { create } = require('./models/record')
 
 const app = express()
 const port = 3000
@@ -24,6 +24,8 @@ app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs', helpers: { eq
 app.set('view engine', 'hbs')
 
 app.use(bodyParser.urlencoded({ extended: true }))
+
+app.use(methodOverride('_method'))
 
 app.get('/', (req, res) => {
   Record.find()
@@ -61,7 +63,7 @@ app.get('/records/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/records/:id/edit', (req, res) => {
+app.put('/records/:id', (req, res) => {
   const id = req.params.id
   const { name, Category, date, amount } = req.body
   let [category, categoryIcon] = Category.split('/')
@@ -76,7 +78,7 @@ app.post('/records/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/records/:id/delete', (req, res) => {
+app.delete('/records/:id', (req, res) => {
   const id = req.params.id
   return Record.findById(id)
     .then(record => record.remove())
