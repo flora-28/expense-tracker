@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 
 const Record = require('./models/record')
 const categoryList = require('./models/seeds/categories.json').results
+const { create } = require('./models/record')
 
 const app = express()
 const port = 3000
@@ -19,7 +20,7 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs', helpers: { eq: (fiterText, i) => fiterText === i } }))
 app.set('view engine', 'hbs')
 
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -79,6 +80,23 @@ app.post('/records/:id/delete', (req, res) => {
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
 })
+
+app.get('/records/filter', (req, res) => {
+  const filter = req.query.filter
+  if (filter === 'all') res.redirect('/')
+  Record.find({ category: filter })
+    .lean()
+    .then(records => {
+      let totalAmount = 0
+      records.forEach(record => {
+        totalAmount += record.amount
+      })
+      res.render('index', { records, totalAmount, filter })
+    })
+    .catch(error => console.log(error))
+})
+
+
 
 app.listen(port, () => {
   console.log(`App is running on http://localhost:${port}`)
